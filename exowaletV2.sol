@@ -15,7 +15,7 @@ contract mycode {
 
     string public withdrawstatus = "null";
 
-    address public publisher;
+    address payable public publisher;
 
     mapping (address => mapping(address => bool)) public approvedaddress;
 
@@ -23,7 +23,11 @@ contract mycode {
 
         approvedaddress[approved][publisher] = approvestatus;
 
-        publisher = msg.sender;
+        publisher = payable(msg.sender);
+
+    }
+
+    receive() external payable { 
 
     }
 
@@ -44,12 +48,11 @@ contract mycode {
 
         }
 
-    } 
+    }
 
+    function withdraw(uint towithdrawvalue) public {
 
-    function withdraw(uint towithdrawvalue) public payable {
-
-       payable (publisher).transfer(towithdrawvalue);
+       publisher.transfer(towithdrawvalue);
 
     }
 
